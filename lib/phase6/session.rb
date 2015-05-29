@@ -2,7 +2,7 @@ require 'json'
 require 'webrick'
 require 'byebug'
 
-module Phase4
+module Phase6
   class Session
     # find the cookie for this app
     # deserialize the cookie into a hash

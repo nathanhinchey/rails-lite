@@ -1,9 +1,9 @@
 require 'webrick'
-require_relative '../lib/phase2/controller_base'
+require_relative '../lib/Phase6/controller_base'
 
-describe Phase2::ControllerBase do
+describe "Phase2::ControllerBase" do
   before(:all) do
-    class UsersController < Phase2::ControllerBase
+    class UsersController < Phase6::ControllerBase
       def index
       end
     end

@@ -1,11 +1,11 @@
 require 'byebug'
 require 'webrick'
-require_relative '../lib/phase5/params'
-require_relative '../lib/phase5/controller_base'
+require_relative '../lib/Phase6/params'
+require_relative '../lib/Phase6/controller_base'
 
-describe Phase5::Params do
+describe Phase6::Params do
   before(:all) do
-    class CatsController < Phase5::ControllerBase
+    class CatsController < Phase6::ControllerBase
       def index
         @cats = ["Gizmo"]
       end
@@ -18,26 +18,26 @@ describe Phase5::Params do
   let(:cats_controller) { CatsController.new(req, res) }
 
   it "handles an empty request" do
-    expect { Phase5::Params.new(req) }.to_not raise_error
+    expect { Phase6::Params.new(req) }.to_not raise_error
   end
 
   context "query string" do
     it "handles single key and value" do
       req.query_string = "key=val"
-      params = Phase5::Params.new(req)
+      params = Phase6::Params.new(req)
       expect(params["key"]).to eq("val")
     end
 
     it "handles multiple keys and values" do
       req.query_string = "key=val&key2=val2"
-      params = Phase5::Params.new(req)
+      params = Phase6::Params.new(req)
       expect(params["key"]).to eq("val")
       expect(params["key2"]).to eq("val2")
     end
 
     it "handles nested keys" do
       req.query_string = "user[address][street]=main"
-      params = Phase5::Params.new(req)
+      params = Phase6::Params.new(req)
       expect(params["user"]["address"]["street"]).to eq("main")
     end
   end
@@ -45,27 +45,27 @@ describe Phase5::Params do
   context "post body" do
     it "handles single key and value" do
       allow(req).to receive(:body) { "key=val" }
-      params = Phase5::Params.new(req)
+      params = Phase6::Params.new(req)
       expect(params["key"]).to eq("val")
     end
 
     it "handles multiple keys and values" do
       allow(req).to receive(:body) { "key=val&key2=val2" }
-      params = Phase5::Params.new(req)
+      params = Phase6::Params.new(req)
       expect(params["key"]).to eq("val")
       expect(params["key2"]).to eq("val2")
     end
 
     it "handles nested keys" do
       allow(req).to receive(:body) { "user[address][street]=main" }
-      params = Phase5::Params.new(req)
+      params = Phase6::Params.new(req)
       expect(params["user"]["address"]["street"]).to eq("main")
     end
   end
 
   context "route params" do
     it "handles route params" do
-      params = Phase5::Params.new(req, {"id" => 5, "user_id" => 22})
+      params = Phase6::Params.new(req, {"id" => 5, "user_id" => 22})
       expect(params["id"]).to eq(5)
       expect(params["user_id"]).to eq(22)
     end
@@ -73,7 +73,7 @@ describe Phase5::Params do
 
   context "indifferent access" do
     it "responds to string and symbol keys" do
-      params = Phase5::Params.new(req, {"id" => 5})
+      params = Phase6::Params.new(req, {"id" => 5})
       expect(params["id"]).to eq(5)
       expect(params[:id]).to eq(5)
     end
@@ -83,7 +83,7 @@ describe Phase5::Params do
   #   describe "#permit" do
   #     it "allows the permitting of multiple attributes" do
   #       req.query_string = "key=val&key2=val2&key3=val3"
-  #       params = Phase5::Params.new(req)
+  #       params = Phase6::Params.new(req)
   #       params.permit("key", "key2")
   #       expect(params.permitted?("key")).to be_truthy
   #       expect(params.permitted?("key2")).to be_truthy
@@ -92,7 +92,7 @@ describe Phase5::Params do
   #
   #     it "collects up permitted keys across multiple calls" do
   #       req.query_string = "key=val&key2=val2&key3=val3"
-  #       params = Phase5::Params.new(req)
+  #       params = Phase6::Params.new(req)
   #       params.permit("key")
   #       params.permit("key2")
   #       expect(params.permitted?("key")).to be_truthy
@@ -104,9 +104,9 @@ describe Phase5::Params do
   #   describe "#require" do
   #     it "throws an error if the attribute does not exist" do
   #       req.query_string = "key=val"
-  #       params = Phase5::Params.new(req)
+  #       params = Phase6::Params.new(req)
   #       expect { params.require("key") }.to_not raise_error
-  #       expect { params.require("key2") }.to raise_error(Phase5::Params::AttributeNotFoundError)
+  #       expect { params.require("key2") }.to raise_error(Phase6::Params::AttributeNotFoundError)
   #     end
   #   end
   #

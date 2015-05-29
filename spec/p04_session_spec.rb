@@ -1,22 +1,22 @@
 require 'webrick'
-require_relative '../lib/phase4/session'
-require_relative '../lib/phase4/controller_base'
+require_relative '../lib/Phase6/session'
+require_relative '../lib/Phase6/controller_base'
 
-describe Phase4::Session do
+describe "Phase4::Session" do
   let(:req) { WEBrick::HTTPRequest.new(Logger: nil) }
   let(:res) { WEBrick::HTTPResponse.new(HTTPVersion: '1.0') }
   let(:cook) { WEBrick::Cookie.new('_rails_lite_app', { xyz: 'abc' }.to_json) }
 
   it "deserializes json cookie if one exists" do
     req.cookies << cook
-    session = Phase4::Session.new(req)
+    session = Phase6::Session.new(req)
     expect(session['xyz']).to eq('abc')
   end
 
   describe "#store_session" do
     context "without cookies in request" do
       before(:each) do
-        session = Phase4::Session.new(req)
+        session = Phase6::Session.new(req)
         session['first_key'] = 'first_val'
         session.store_session(res)
       end
@@ -39,12 +39,12 @@ describe Phase4::Session do
       end
 
       it "reads the pre-existing cookie data into hash" do
-        session = Phase4::Session.new(req)
+        session = Phase6::Session.new(req)
         expect(session['pho']).to eq('soup')
       end
 
       it "saves new and old data to the cookie" do
-        session = Phase4::Session.new(req)
+        session = Phase6::Session.new(req)
         session['machine'] = 'mocha'
         session.store_session(res)
         cookie = res.cookies.find { |c| c.name == '_rails_lite_app' }
@@ -56,9 +56,9 @@ describe Phase4::Session do
   end
 end
 
-describe Phase4::ControllerBase do
+describe Phase6::ControllerBase do
   before(:all) do
-    class CatsController < Phase4::ControllerBase
+    class CatsController < Phase6::ControllerBase
     end
   end
   after(:all) { Object.send(:remove_const, "CatsController") }
@@ -69,7 +69,7 @@ describe Phase4::ControllerBase do
 
   describe "#session" do
     it "returns a session instance" do
-      expect(cats_controller.session).to be_a(Phase4::Session)
+      expect(cats_controller.session).to be_a(Phase6::Session)
     end
 
     it "returns the same instance on successive invocations" do
