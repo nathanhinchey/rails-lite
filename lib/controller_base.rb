@@ -35,9 +35,10 @@ module Phase6
     # Set the response's content type to the given type.
     # Raise an error if the developer tries to double render.
     def render_content(content, content_type)
-      raise "Can't render/redirect twice, doofus" if already_built_response?
+      raise "Can't render/redirect twice" if already_built_response?
       res.content_type = content_type
       res.body = content
+      session.store_session(res)
       @already_built_response = true
     end
 
@@ -48,17 +49,9 @@ module Phase6
     end
 
     def redirect_to(url)
-      raise "Can't render/redirect twice, doofus" if already_built_response?
+      raise "Can't render/redirect twice" if already_built_response?
       @res["location"]= url
       @res.status = 302
-      session.store_session(res)
-      @already_built_response = true
-    end
-
-    def render_content(content, content_type)
-      raise "Can't render/redirect twice, doofus" if already_built_response?
-      res.content_type = content_type
-      res.body = content
       session.store_session(res)
       @already_built_response = true
     end
