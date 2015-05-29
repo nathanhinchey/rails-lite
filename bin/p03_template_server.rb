@@ -6,7 +6,7 @@ require_relative '../lib/phase3/controller_base'
 # http://www.ruby-doc.org/stdlib-2.0/libdoc/webrick/rdoc/WEBrick/HTTPResponse.html
 # http://www.ruby-doc.org/stdlib-2.0/libdoc/webrick/rdoc/WEBrick/Cookie.html
 
-class MyController3 < Phase3::ControllerBase
+class MyController3 < RailsLite::ControllerBase
   def go
     render :show
   end
@@ -20,7 +20,7 @@ end
 trap('INT') { server.shutdown }
 server.start
 
-class MyController2 < Phase2::ControllerBase
+class MyController2 < RailsLite::ControllerBase
   def go
     if @req.path == "/cats"
       render_content("hello cats!", "text/html")

@@ -32,7 +32,7 @@ class Cat
   end
 end
 
-class CatsController < Phase6::ControllerBase
+class CatsController < RailsLite::ControllerBase
   def create
     @cat = Cat.new(params["cat"])
     if @cat.save
