@@ -4,7 +4,7 @@ require 'active_support'
 require 'active_support/core_ext'
 require 'erb'
 
-module Phase6
+module RailsLite
   class ControllerBase
     # use ERB and binding to evaluate templates
     # pass the rendered html to render_content

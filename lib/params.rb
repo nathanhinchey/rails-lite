@@ -1,15 +1,12 @@
 require 'byebug'
 require 'uri'
 
-module Phase6
+module RailsLite
   class Params
-    # use your initialize to merge params from
+    # initialize merges params from
     # 1. query string
     # 2. post body
     # 3. route params
-    #
-    # You haven't done routing yet; but assume route params will be
-    # passed in as a hash to `Params.new` as below:
     def initialize(req, route_params = {})
       hash = {}
 
@@ -35,11 +32,11 @@ module Phase6
     class AttributeNotFoundError < ArgumentError; end;
 
     private
-    # this should return deeply nested hash
-    # argument format
-    # user[address][street]=main&user[address][zip]=89436
-    # should return
-    # { "user" => { "address" => { "street" => "main", "zip" => "89436" } } }
+    # this returns deeply nested hash:
+    #   this argument format:
+    #   user[address][street]=main&user[address][zip]=89436
+    #   will return this:
+    #   { "user" => { "address" => { "street" => "main", "zip" => "89436" } } }
     def parse_www_encoded_form(www_encoded_form)
       hash = {}
 
@@ -63,8 +60,8 @@ module Phase6
       deep_hash
     end
 
-    # this should return an array
-    # user[address][street] should return ['user', 'address', 'street']
+    # this returns an array
+    # user[address][street] will return ['user', 'address', 'street']
     def parse_key(key)
       re = /\]\[|\[|\]/
       key.split(re)

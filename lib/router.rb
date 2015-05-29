@@ -1,4 +1,4 @@
-module Phase6
+module RailsLite
   class Route
     attr_reader :pattern, :http_method, :controller_class, :action_name
 
@@ -16,12 +16,12 @@ module Phase6
       true
     end
 
-    # use pattern to pull out route params (save for later?)
+    # use pattern to pull out route params
     # instantiate controller and call controller action
     def run(req, res)
       route_match = pattern.match(req.path)
       route_params = {}
-      
+
       route_match.names.each do |key|
         route_params[key] = route_match[key]
       end
