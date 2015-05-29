@@ -1,7 +1,7 @@
 require 'byebug'
 require 'webrick'
-require_relative '../lib/Phase6/params'
-require_relative '../lib/Phase6/controller_base'
+require_relative '../lib/params'
+require_relative '../lib/controller_base'
 
 describe Phase6::Params do
   before(:all) do
