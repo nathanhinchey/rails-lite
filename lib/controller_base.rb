@@ -10,25 +10,16 @@ module Phase6
     # pass the rendered html to render_content
     attr_reader :req, :res, :params
 
-    # Setup the controller
-    def initialize(req, res)
+    # setup the controller
+    def initialize(req, res, route_params = {})
       @res = res
       @req = req
-      @already_built_response = false
+      @params = Params.new(req, route_params)
     end
 
     # Helper method to alias @already_built_response
     def already_built_response?
       !!@already_built_response
-    end
-
-    # Set the response status code and header
-    def redirect_to(url)
-      raise "Can't render/redirect twice, doofus" if already_built_response?
-      @res["location"]= url
-      @res.status = 302
-
-      @already_built_response = true
     end
 
     # Populate the response with content.
@@ -48,6 +39,7 @@ module Phase6
       render_content(f,'text/html')
     end
 
+    # Set the response status code and header
     def redirect_to(url)
       raise "Can't render/redirect twice" if already_built_response?
       @res["location"]= url
@@ -61,13 +53,6 @@ module Phase6
       @session ||= Session.new(req)
     end
 
-
-    # setup the controller
-    def initialize(req, res, route_params = {})
-      @res = res
-      @req = req
-      @params = Params.new(req, route_params)
-    end
     # use this with the router to call action_name (:index, :show, :create...)
     def invoke_action(name)
       self.send(name)
